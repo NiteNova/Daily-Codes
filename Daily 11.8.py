@@ -11,10 +11,10 @@ health = 100
 #---------------Floor Fall Function-------------------------
 def floor_fall():
     chance = random.randrange(0,100)
-    if chance < 50:
+    if chance < 10:
         print("You fell through the floor and died")
         return 1
-    elif chance < 90:
+    elif chance < 20:
         print("You randomly get teleported to the survivors' stronghold ") 
         return 2
     else:
@@ -28,8 +28,8 @@ def floor_fall():
             if chance < 25:
                 print("You randomly get teleported to the survivors' stronghold")
                 return 2
-        else:
-            print("You move to a different position after hearing a bit of rumbling underneath your feet")
+            else:
+                print("You move to a different position after hearing a bit of rumbling underneath your feet")
         
 #--------------Battle system Function-----------------------
 def BattleSystem(monsterType, playerHealth):
@@ -159,21 +159,28 @@ while game_over is not True:
     if room == 1:
         print()
         print("You're in your bedroom ")
+        
+        
         if bat == False:
             print("and you see a baseball bat close to the door")
         if room1Mon == False:
             monster("Bedroom") #function call
             room1Mon = True
+            
+            
         print("A direction you can go is (e)ast) ")
-
         choice = input()
         if choice == 'e' or choice == 'E' or choice == 'east':
             room = 2
+            
+            
         elif (choice == 'baseball bat' or choice == 'pick up baseball bat') and bat == False:
             inventory.append("Baseball bat")
             bat = True
         elif choice == 'inventory':
             print(inventory)
+            
+            
         else:
             print("Sorry, that is not an option.")
     if room == 2:
@@ -182,35 +189,42 @@ while game_over is not True:
             monster("Hallway") #function call
             room2Mon = True
         print("You see a magical health potion on the floor and lucky charm close to it")
-        print("You are in the hallway, you can go (w)est to go back to your room or (s)outh ")
-        choice = input()
-        Health = False
-        Charm = False
-    
-        result = floor_fall()
+        result = floor_fall() #floor drop function call
+        
         if result == 1:
             dead = 1
+            if dead == 1:
+                print("Game Over, you lost.")
+            game_over = True
+            break
+    
         if result == 2:
             dead = 2
-        
-        if dead == 1:
-            print("Game Over, you lost.")
+            if dead == 2:
+                print("You survived and won the game. Congrats!")
             game_over = True
-        elif dead == 2:
-            print("You survived and won the game. Congrats!")
-            game_over = True
+            break
             
+        print("You are in the hallway, you can go (w)est to go back to your room or (s)outh ")
+        choice = input()
+        
+        HealthPot = False
+        Charm = False
             
         if choice == 's' or choice == 'S' or choice == 'South':
             room = 3
+
         elif choice == 'w' or choice == 'W' or choice == 'West':
             room = 1
-        elif choice == 'magical health potion' or choice == 'pick up health magical potion' and Health == False:
+            
+        elif choice == 'magical health potion' or choice == 'pick up health magical potion' and HealthPot == False:
             inventory.append("Health Magical Potion")
-            Health = True
+            HealthPot = True
+            
         elif choice == "lucky charm" or choice == 'pick up lucky charm' and Charm == False:
             inventory.append("Lucky Charm")
             Charm = True
+            
         else:
             print("Sorry, that is not an option.")
     
@@ -311,7 +325,9 @@ while game_over is not True:
             room = 10
         else:
             print("Sorry that isn't a direction you can go.")
-            
+       
+       
+# Possible endings            
 if dead == 1:
     game_over = True
 elif dead == 2:
