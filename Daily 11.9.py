@@ -7,39 +7,31 @@ clock = pygame.time.Clock() #set up clock
 gameover = False #variable to run our game loop
 
 
-Link = pygame.image.load('link.png') #Load your spritesheet
-Link.set_colorkey((255, 0, 255)) #This makes bright pink (255, 0, 255) transparent
-
-frameWidth = 64
-frameHeight = 96
-RowNum = 0 #for left animation, this will need to change for other animations
-RowNum1 = 1
-RowNum2 = 2
-RowNum3 = 3
-frameNum = 0
-ticker = 0
-
-
 #CONSTANTS
 LEFT=0
 RIGHT=1
 UP = 2
 DOWN = 3
 
-#load images
-bg_image = pygame.image.load("space.png")
-moon_image = pygame.image.load("Moon.png")
-moon_image = pygame.transform.scale(moon_image, (300, 300))
+Link = pygame.image.load('Link.png') #Load your spritesheet
+Link.set_colorkey((255, 0, 255)) #This makes bright pink (255, 0, 255) transparent
+
+
 
 #player variables
 xpos = 500 #xpos of player
 ypos = 200 #ypos of player
-vx = 0 #x velocity of player
-vy = 0 #y velocity of player
+vx = 2 #x velocity of player
+vy = 6 #y velocity of player
 keys = [False, False, False, False] #this list holds whether each key has been pressed
-direction = [LEFT, RIGHT, UP, DOWN]
 isOnGround = False #this variable stops gravity from pulling you down more when on a platform
 health = 100
+
+frameWidth = 64
+frameHeight = 96
+RowNum = 0 #for left animation, this will need to change for other animations
+frameNum = 0
+ticker = 0
 
 #enemy variables
 #expos = 200
@@ -72,10 +64,6 @@ def enemyCollide(enemyInfo, playerX, playerY):
     else:
         return False
 
-#SOUND--------------------------------------------------------------------
-jump = pygame.mixer.Sound('jump.ogg')#load in sound effect
-music = pygame.mixer.music.load('music.ogg')#load in background music
-pygame.mixer.music.play(-1)#start background music
 #-------------------------------------------------------------------------
 
 while not gameover and health > 0: #GAME LOOP############################################################
@@ -127,14 +115,11 @@ while not gameover and health > 0: #GAME LOOP###################################
           
     #physics section--------------------------------------------------------------------
     #RIGHT MOVEMENT
-    if keys[RIGHT]==True:
-        vx=+3
-        direction = RIGHT
-    
-    #LEFT MOVEMENT
-    elif keys[LEFT]==True:
+    if keys[LEFT]==True:
         vx=-3
-        direction = LEFT
+   
+    elif keys[RIGHT]==True:
+        vx=3
 
     #turn off velocity
     else:
@@ -143,56 +128,35 @@ while not gameover and health > 0: #GAME LOOP###################################
         
     #Update position based on velocity    
     xpos+=vx
-    
     if keys[UP] == True and isOnGround == True: #only jump when on the ground
         vy = -8
         isOnGround = False
         direction = UP
-        pygame.mixer.Sound.play(jump) #play the jump sound
+        
+    xpos+=vx
+    ypos+=vy
     
     #Animation--------------------------------------------------------------------------
     
     # Only animate when in motion
     if vx < 0: #left animation
-        # Ticker is a speedometer. We don't want Link animating as fast the
-        # process can process! Update Animation Frame each time ticker goes over
+        RowNum = 0
         ticker += 1
-        if ticker%5 == 0: #only changes frames every 10 ticks
-            frameNum+= 1
+        if ticker%5==0: #only changes frames every 10 ticks
+            frameNum+=1
             #If we are over the number of frames in our sprite, reset to 0.
-        if frameNum > 7:
+        if frameNum>7:
             frameNum = 0
-    elif vx > 0: #Right animation
-        # Ticker is a speedometer. We don't want Link animating as fast the
-        # process can process! Update Animation Frame each time ticker goes over
-        rowNum = 1
+    if vx > 0: #Right animation
+        RowNum = 1
         ticker += 1
         if ticker%5 == 0: #only changes frames every 10 ticks
             frameNum+= 1
-            #If we are over the number of frames in our sprite, reset to 0.
-        if frameNum > 7:
-            frameNum = 0
-    elif vy < 0: #Right animation
-        # Ticker is a speedometer. We don't want Link animating as fast the
-        # process can process! Update Animation Frame each time ticker goes over
-        rowNum = 2
-        ticker += 1
-        if ticker%5 == 0: #only changes frames every 10 ticks
-            frameNum+= 1
-            #If we are over the number of frames in our sprite, reset to 0.
-        if frameNum > 7:
-            frameNum = 0
-    elif vy > 0: #Right animation
-        # Ticker is a speedometer. We don't want Link animating as fast the
-        # process can process! Update Animation Frame each time ticker goes over
-        rowNum = 3
-        ticker += 1
-        if ticker%5 == 0: #only changes frames every 10 ticks
-            frameNum+= 1
-            #If we are over the number of frames in our sprite, reset to 0.
+            
         if frameNum > 7:
             frameNum = 0
         
+    
     
     #COLLISION
     if xpos>100 and xpos<200 and ypos+40 >750 and ypos+40 <770:
@@ -239,31 +203,21 @@ while not gameover and health > 0: #GAME LOOP###################################
         vy+=.2 #notice this grows over time, aka ACCELERATION
     
 
-    #update player position
-    xpos+=vx 
-    ypos+=vy
+    
     
   
     # RENDER Section--------------------------------------------------------------------------------
             
     screen.fill((0,0,0)) #wipe screen so it doesn't smear
-    
-    screen.blit(bg_image, (0,0)) #draw background image
-    
-    screen.blit(moon_image, (200, 350))
+
     
     
     
     
     #draw player
-    if direction == RIGHT:
-        screen.blit(Link, (xpos, ypos), (frameWidth*frameNum, RowNum1*frameHeight, frameWidth, frameHeight))
-    if direction == LEFT:
-        screen.blit(Link, (xpos, ypos), (frameWidth*frameNum, RowNum*frameHeight, frameWidth, frameHeight))
-    if direction == UP:
-        screen.blit(Link, (xpos, ypos), (frameWidth*frameNum, RowNum2*frameHeight, frameWidth, frameHeight))
-    if direction == DOWN:
-        screen.blit(Link, (xpos, ypos), (frameWidth*frameNum, RowNum3*frameHeight, frameWidth, frameHeight))
+    screen.blit(Link, (xpos, ypos), (frameWidth*frameNum, RowNum*frameHeight, frameWidth, frameHeight))
+    
+ 
     
     
     #draw enemy
