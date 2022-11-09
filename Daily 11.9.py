@@ -175,7 +175,7 @@ while not gameover and health > 0: #GAME LOOP###################################
     elif vy < 0: #Right animation
         # Ticker is a speedometer. We don't want Link animating as fast the
         # process can process! Update Animation Frame each time ticker goes over
-        rowNum = 1
+        rowNum = 2
         ticker += 1
         if ticker%5 == 0: #only changes frames every 10 ticks
             frameNum+= 1
@@ -185,7 +185,7 @@ while not gameover and health > 0: #GAME LOOP###################################
     elif vy > 0: #Right animation
         # Ticker is a speedometer. We don't want Link animating as fast the
         # process can process! Update Animation Frame each time ticker goes over
-        rowNum = 1
+        rowNum = 3
         ticker += 1
         if ticker%5 == 0: #only changes frames every 10 ticks
             frameNum+= 1
