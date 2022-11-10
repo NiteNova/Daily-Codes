@@ -155,6 +155,22 @@ while not gameover and health > 0: #GAME LOOP###################################
             
         if frameNum > 7:
             frameNum = 0
+    if vy < 0 and vx == 0: #Right animation
+        RowNum = 2
+        ticker += 1
+        if ticker%5 == 0: #only changes frames every 10 ticks
+            frameNum+= 1
+            
+        if frameNum > 0:
+            frameNum = 0
+    if vy > 0 and vx == 0: #Right animation
+        RowNum = 3
+        ticker += 1
+        if ticker%5 == 0: #only changes frames every 10 ticks
+            frameNum+= 1
+            
+        if frameNum > 0:
+            frameNum = 0
         
     
     
