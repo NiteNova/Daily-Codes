@@ -181,7 +181,7 @@ while not gameover and health > 0: #GAME LOOP###################################
         ypos = 760
     
     #gravity
-    if isOnGround == False and xVel > 0 or yVel > 0:
+    if isOnGround == False and xVel != 0 or yVel != 0:
         yVel+=.2
     elif isOnGround == False:
         vy+=.2 #notice this grows over time, aka ACCELERATION
