@@ -93,8 +93,7 @@ while not gameover and health > 0: #GAME LOOP###################################
         yVel = controller.get_axis(1) #returns a number b/t -1 and 1
 
             
-        #if event.type == pygame.CONTROLLER_AXIS_LEFTX:
-        #    keys[LEFT] = True
+
         
     #function call for enemy movement                           
     enemyMove(enemy1)
@@ -182,9 +181,10 @@ while not gameover and health > 0: #GAME LOOP###################################
         ypos = 760
     
     #gravity
-    if isOnGround == False:
+    if isOnGround == False and xVel > 0 or yVel > 0:
+        yVel+=.2
+    elif isOnGround == False:
         vy+=.2 #notice this grows over time, aka ACCELERATION
-    
     #update player position for controller
     xpos += int(xVel * 10)
     ypos += int(yVel * 10)    
